@@ -202,7 +202,11 @@ export default function WeddingInvitation() {
         <motion.div className="hero-content" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1 }}>
           <div className="monogram">K <span>♡</span> R</div>
           <p className="hero-kicker">{wedding.invitation.kicker}</p>
-          <h1><span></span>Karthik<em>&</em><span>Dr. Revathy</span></h1>
+          <h1 className="hero-names">
+  <span className="hero-name">Karthik</span>
+  <em className="hero-ampersand">&</em>
+  <span className="hero-name">Dr. Revathy</span>
+</h1>
           <div className="gold-rule"><span /></div>
           <p className="hero-date">15 · 11 · 2026</p>
           <p className="hero-location">{wedding.location}</p>

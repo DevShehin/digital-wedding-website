@@ -52,11 +52,7 @@ export const wedding = {
       alt: "Karthik and Revathy during their London photoshoot",
       caption: "A moment to remember"
     },
-    {
-      src: "/images/uk-photoshoot-2.jpeg",
-      alt: "Karthik and Revathy on Westminster Bridge",
-      caption: "Together, everywhere"
-    },
+    
     {
       src: "/images/uk-photoshoot-3.jpeg",
       alt: "Romantic portrait of Karthik and Revathy",

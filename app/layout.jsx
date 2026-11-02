@@ -1,6 +1,15 @@
 import "./globals.css";
-
+import { Cormorant_Garamond } from "next/font/google";
 import { wedding } from "./wedding-data";
+
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-cormorant",
+});
 
 export const metadata = {
   title: `${wedding.couple.groom} & ${wedding.couple.bride} | Wedding Invitation`,
@@ -14,7 +23,7 @@ export const metadata = {
     description:
       "Two hearts, one beautiful beginning. Join us for our wedding celebration.",
 
-    images: ["/images/uk-photoshoot-2.jpeg"],
+    images: ["/images/uk-photoshoot-3.jpeg"],
     type: "website"
   },
 
@@ -28,7 +37,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={cormorant.variable}>{children}</body>
     </html>
   );
 }
