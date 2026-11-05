@@ -15,6 +15,28 @@ import {
 } from "lucide-react";
 import { wedding } from "./wedding-data";
 
+// Supports YouTube Live, watch, Shorts, youtu.be and embed URLs.
+function getYouTubeEmbedUrl(url) {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.replace(/^www\./, "");
+    let videoId = "";
+
+    if (host === "youtu.be") {
+      videoId = parsed.pathname.split("/").filter(Boolean)[0] || "";
+    } else if (host.endsWith("youtube.com")) {
+      const parts = parsed.pathname.split("/").filter(Boolean);
+      if (parsed.pathname === "/watch") videoId = parsed.searchParams.get("v") || "";
+      else if (["live", "shorts", "embed"].includes(parts[0])) videoId = parts[1] || "";
+    }
+
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : "";
+  } catch {
+    return "";
+  }
+}
+
 
 function useCountdown(targetDate) {
   const [now, setNow] = useState(null);
@@ -203,9 +225,9 @@ export default function WeddingInvitation() {
           <div className="monogram">K <span>♡</span> R</div>
           <p className="hero-kicker">{wedding.invitation.kicker}</p>
           <h1 className="hero-names">
-  <span className="hero-name">Karthik</span>
+  <span className="hero-name">{wedding.couple.groom}</span>
   <em className="hero-ampersand">&</em>
-  <span className="hero-name">Dr. Revathy</span>
+  <span className="hero-name">{wedding.couple.bride}</span>
 </h1>
           <div className="gold-rule"><span /></div>
           <p className="hero-date">15 · 11 · 2026</p>
@@ -228,22 +250,19 @@ export default function WeddingInvitation() {
         <div className="hero-bottom"><span>WITH LOVE & BLESSINGS</span><span>SCROLL TO EXPLORE ↓</span></div>
       </section>
       
-      <section className="feature-photo">
+      <section className="feature-photo" aria-label="Our story">
   <img
-    src={wedding.photos[1].src}
-    alt={wedding.photos[1].alt}
+    src={wedding.storyImage.src}
+    alt={wedding.storyImage.alt}
   />
-
   <div className="feature-overlay">
-    <span>OUR STORY</span>
-
+    <span>{wedding.invitation.storyEyebrow}</span>
     <h2>
-      Every love story is beautiful.
+      {wedding.invitation.storyLine1}
       <br />
-      Ours is our favourite.
+      {wedding.invitation.storyLine2}
     </h2>
-
-    <p>Karthik & Revathy</p>
+    <p>{wedding.couple.groom} &amp; {wedding.couple.bride}</p>
   </div>
 </section>
 
@@ -280,26 +299,72 @@ export default function WeddingInvitation() {
 </motion.div>
       </section>
 
-      <section className="couple-section section-pad">
-        <SectionHeading eyebrow="OUR FAVOURITE MEMORIES" title="A little glimpse of us" subtitle="Some moments from our London story, carried home in our hearts." />
+      <section className="couple-section section-pad" aria-label="Couple photo gallery">
         <div className="photo-grid">
-  {wedding.photos.map((photo, index) => (
-    <motion.figure
-      key={photo.src}
-      className="photo-card"
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.65, delay: index * 0.08 }}
-    >
-      <img
-        src={photo.src}
-        alt={photo.alt}
-        loading={index === 0 ? "eager" : "lazy"}
-      />
-    </motion.figure>
-  ))}
-</div>
+          {wedding.photos.map((photo, index) => (
+            <motion.figure
+              key={photo.src}
+              className="photo-card"
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.65, delay: index * 0.08 }}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+            </motion.figure>
+          ))}
+        </div>
+      </section>
+
+      <section className="live-stream-section section-pad" aria-labelledby="live-stream-title">
+        <div className="live-stream-inner">
+          <span className="eyebrow">{wedding.invitation.liveStreamEyebrow}</span>
+          <h2 id="live-stream-title">{wedding.invitation.liveStreamTitle}</h2>
+          <p className="live-stream-description">
+            {wedding.invitation.liveStreamDescription}
+          </p>
+
+          {wedding.youtubeLiveUrl ? (
+            <div className="live-stream-player">
+              {getYouTubeEmbedUrl(wedding.youtubeLiveUrl) ? (
+                <iframe
+                  src={getYouTubeEmbedUrl(wedding.youtubeLiveUrl)}
+                  title="Karthik and Dr. Revathy wedding live stream"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              ) : (
+                <div className="live-stream-placeholder">
+                  <span className="live-stream-pulse" />
+                  <p>Your YouTube Live link is saved. Use the button below to watch the stream.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="live-stream-placeholder">
+              <span className="live-stream-pulse" />
+              <p>{wedding.invitation.liveStreamPendingMessage}</p>
+            </div>
+          )}
+
+          <a
+            className={`live-stream-button ${!wedding.youtubeLiveUrl ? "is-disabled" : ""}`}
+            href={wedding.youtubeLiveUrl || undefined}
+            target={wedding.youtubeLiveUrl ? "_blank" : undefined}
+            rel={wedding.youtubeLiveUrl ? "noreferrer" : undefined}
+            aria-disabled={!wedding.youtubeLiveUrl}
+            onClick={(event) => {
+              if (!wedding.youtubeLiveUrl) event.preventDefault();
+            }}
+          >
+            Watch Live on YouTube <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </section>
 
       <section className="date-section section-pad">

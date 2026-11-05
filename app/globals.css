@@ -522,9 +522,9 @@ button {
 
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 16px;
-  max-width: 1050px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -532,28 +532,11 @@ button {
   margin: 0;
   position: relative;
   overflow: hidden;
+  aspect-ratio: 4 / 5;
   background: #192640;
-  border: 1px solid rgba(198, 166, 107, 0.16);
-}
-
-.photo-1 {
-  grid-column: span 5;
-  aspect-ratio: 4/5;
-}
-
-.photo-2 {
-  grid-column: span 7;
-  aspect-ratio: 7/5;
-}
-
-.photo-3 {
-  grid-column: span 7;
-  aspect-ratio: 7/5;
-}
-
-.photo-4 {
-  grid-column: span 5;
-  aspect-ratio: 4/5;
+  border: 1px solid rgba(198, 166, 107, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .photo-card img {
@@ -561,33 +544,116 @@ button {
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center 55%;
+  object-position: center;
   transition: transform 0.8s cubic-bezier(.2, .7, .2, 1);
 }
 
-.photo-card:hover img {
-  transform: scale(1.045);
+@media (hover: hover) and (pointer: fine) {
+  .photo-card:hover img {
+    transform: scale(1.06);
+  }
+
+  .photo-card:hover {
+    border-color: var(--gold-light);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+  }
 }
 
-.photo-card:after {
-  content: "";
-  position: absolute;
-  inset: 40% 0 0;
-  background: linear-gradient(transparent, rgba(8, 15, 28, 0.72));
-  pointer-events: none;
+/* =================================
+   YOUTUBE LIVE STREAM
+================================= */
+
+.live-stream-section {
+  background:
+    radial-gradient(ellipse at top, #192a45 0%, #080f1f 72%);
+  text-align: center;
 }
 
-.photo-card figcaption {
-  position: absolute;
-  z-index: 1;
-  bottom: 15px;
-  left: 16px;
-  right: 16px;
+.live-stream-inner {
+  width: min(100%, 900px);
+  margin: 0 auto;
+}
+
+.live-stream-inner h2 {
+  margin: 17px auto 14px;
+  color: var(--ivory);
+  font: 400 clamp(2rem, 5vw, 3.5rem)/1.12 var(--font-cormorant), Georgia, serif;
+}
+
+.live-stream-description {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  color: var(--muted);
+  font: 16px/1.7 Georgia, serif;
+}
+
+.live-stream-player,
+.live-stream-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(198, 166, 107, 0.5);
+  border-radius: 14px;
+  background: #050a13;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+}
+
+.live-stream-player iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.live-stream-placeholder {
   display: flex;
-  justify-content: space-between;
-  color: white;
-  font-size: 8px;
-  letter-spacing: 0.16em;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  color: #d8d1c5;
+  font: 15px/1.6 Georgia, serif;
+}
+
+.live-stream-placeholder p {
+  max-width: 440px;
+  margin: 0;
+}
+
+.live-stream-pulse {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--gold-light);
+  box-shadow: 0 0 0 7px rgba(198, 166, 107, 0.12), 0 0 24px var(--gold-glow);
+}
+
+.live-stream-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 14px 24px;
+  border: 1px solid var(--gold-light);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  color: #101827;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.live-stream-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px var(--gold-glow);
+}
+
+.live-stream-button.is-disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
 }
 
 /* =================================
@@ -1094,28 +1160,29 @@ button {
 
   .photo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
+    gap: 10px;
   }
 
-  .photo-1,
-  .photo-4,
-  .photo-2,
-  .photo-3 {
-    grid-column: span 1;
-    aspect-ratio: 3/4;
+  .photo-card {
+    aspect-ratio: 3 / 4;
   }
 
   .photo-card img {
     object-position: center;
   }
 
-  .photo-card figcaption {
-    left: 9px;
-    right: 9px;
-    bottom: 10px;
-    font-size: 6px;
-    letter-spacing: 0.1em;
-    gap: 5px;
+  .live-stream-description {
+    font-size: 14px;
+  }
+
+  .live-stream-placeholder {
+    font-size: 13px;
+    padding: 16px;
+  }
+
+  .live-stream-button {
+    width: 100%;
+    max-width: 320px;
   }
 
   .scratch-wrap {
