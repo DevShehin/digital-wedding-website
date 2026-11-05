@@ -27,7 +27,7 @@ export const wedding = {
 
     storyEyebrow: "OUR STORY",
     storyLine1: "Every love story is beautiful.",
-    storyLine2: "Ours is our favourite.",
+    storyLine2: "Our's is our favourite.",
 
     liveStreamEyebrow: "FOR OUR LOVED ONES, NEAR AND FAR",
     liveStreamTitle: "Celebrate with us, wherever you are",
